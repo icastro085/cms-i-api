@@ -1,0 +1,15 @@
+{
+    "name": "root/cms-i-api",
+    "authors": [
+        {
+            "name": "Ivanildo de Castro",
+            "email": "ivanildo.decastro085@gmail.com"
+        }
+    ],
+    "require": {
+        "slim/slim": "^3.9",
+        "monolog/monolog": "^1.23",
+        "symfony/yaml": "^3.4",
+        "oscarotero/psr7-middlewares": "^3.21"
+    }
+}
