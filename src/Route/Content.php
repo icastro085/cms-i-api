@@ -15,8 +15,9 @@ class Content {
     $this->service = new SContent($container['db']);
   }
 
-  function index(Request $request, Response $response) {
+  function index(Request $request, Response $response, array $args) {
     $queryParams = $request->getQueryParams();
+    $queryParams['type'] = $args['type'];
     $result = $this->service->findAll($queryParams);
     if ($result['status']) {
       return $response->withJson($result['data'], 200);

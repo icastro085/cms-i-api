@@ -15,6 +15,10 @@ class Content {
     'text' => ['%[value]%', 'LIKE'],
   ];
 
+  private $defaultParamsAnd = [
+    'type' => ['[value]', '='],
+  ];
+
   function __construct($db) {
     $this->db = $db;
   }
@@ -35,9 +39,9 @@ class Content {
 
     $where = '';
     $whereParams = [];
-    
+
     if (count($queryParams)) {
-      $where = [];
+      $wherePartial = [];
       foreach($this->defaultParamsOr as $field => $value) {
         if ($queryParams[$field]) {
           $whereParams[":$field"] = str_replace(
@@ -46,10 +50,32 @@ class Content {
             $value[0]
           );
 
-          $where[] = "$field $value[1] :$field";
+          $wherePartial[] = "$field $value[1] :$field";
         }
       }
-      $where = 'WHERE (' . join(' OR ', $where) . ')';
+      if (count($wherePartial)) {
+        $where = "$where (" . join(' OR ', $wherePartial) . ')';
+      }
+      $wherePartial = [];
+      foreach($this->defaultParamsAnd as $field => $value) {
+        if ($queryParams[$field]) {
+          $whereParams[":$field"] = str_replace(
+            '[value]',
+            $queryParams[$field],
+            $value[0]
+          );
+
+          $wherePartial[] = "$field $value[1] :$field";
+        }
+      }
+      
+      if (count($wherePartial)) {
+        $where = $where . ($where ? ' AND ' : '') . join(' AND ', $wherePartial);
+      }
+
+      if ($where) {
+        $where = "WHERE $where";
+      }
     }
 
     $sql = str_replace('[where]', $where, $sql);
