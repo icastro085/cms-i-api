@@ -20,20 +20,20 @@ class Index {
   }
 
   private function setLogger($container) {
-    $container['logger'] = function($c) {
-      $logger = new \Monolog\Logger('api-logger');
-      $file_handler = new \Monolog\Handler\StreamHandler(ROOT_PATH . 'logs/app.log');
+    $container["logger"] = function($c) {
+      $logger = new \Monolog\Logger("api-logger");
+      $file_handler = new \Monolog\Handler\StreamHandler(ROOT_PATH . "logs/app.log");
       $logger->pushHandler($file_handler);
       return $logger;
     };
   }
 
   private function setDatabase($container) {
-    $container['db'] = function ($c) {
-      $db = $c['settings']['db'];
+    $container["db"] = function ($c) {
+      $db = $c["settings"]["db"];
       $pdo = new PDO(
-        'mysql:host=' . $db['host'] . ';dbname=' . $db['dbname'],
-        $db['user'], $db['password']
+        "mysql:host=" . $db["host"] . ";dbname=" . $db["dbname"],
+        $db["user"], $db["password"]
       );
       $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
@@ -50,15 +50,15 @@ class Index {
 
   function route($app) {
     //Index
-    $app->get('/', RIndex::class . ':index');
+    $app->get("/", RIndex::class . ":index");
 
     //Content
-    $app->group('/content/{type}', function() {
-      $this->get('/', RContent::class . ':index');
-      $this->get('/{id}/', RContent::class . ':find');
-      $this->post('/', RContent::class . ':create');
-      $this->put('/{id}/', RContent::class . ':update');
-      $this->delete('/{id}/', RContent::class . ':delete');
+    $app->group("/content/{type}", function() {
+      $this->get("/", RContent::class . ":index");
+      $this->get("/{id}/", RContent::class . ":find");
+      $this->post("/", RContent::class . ":create");
+      $this->put("/{id}/", RContent::class . ":update");
+      $this->delete("/{id}/", RContent::class . ":delete");
     });
   }
 }

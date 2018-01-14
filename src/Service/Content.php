@@ -11,12 +11,12 @@ class Content {
   private $db;
   
   private $defaultParamsOr = [
-    'title' => ['%[value]%', 'LIKE'],
-    'text' => ['%[value]%', 'LIKE'],
+    "title" => ["%[value]%", "LIKE"],
+    "text" => ["%[value]%", "LIKE"],
   ];
 
   private $defaultParamsAnd = [
-    'type' => ['[value]', '='],
+    "type" => ["[value]", "="],
   ];
 
   function __construct($db) {
@@ -32,12 +32,12 @@ class Content {
   }
 
   function findAll(array $queryParams = []) {
-    $sql = '
+    $sql = "
       SELECT * FROM content
       [where]
-    ';
+    ";
 
-    $where = '';
+    $where = "";
     $whereParams = [];
 
     if (count($queryParams)) {
@@ -45,7 +45,7 @@ class Content {
       foreach($this->defaultParamsOr as $field => $value) {
         if ($queryParams[$field]) {
           $whereParams[":$field"] = str_replace(
-            '[value]',
+            "[value]",
             $queryParams[$field],
             $value[0]
           );
@@ -54,13 +54,13 @@ class Content {
         }
       }
       if (count($wherePartial)) {
-        $where = "$where (" . join(' OR ', $wherePartial) . ')';
+        $where = "$where (" . join(" OR ", $wherePartial) . ")";
       }
       $wherePartial = [];
       foreach($this->defaultParamsAnd as $field => $value) {
         if ($queryParams[$field]) {
           $whereParams[":$field"] = str_replace(
-            '[value]',
+            "[value]",
             $queryParams[$field],
             $value[0]
           );
@@ -70,7 +70,7 @@ class Content {
       }
       
       if (count($wherePartial)) {
-        $where = $where . ($where ? ' AND ' : '') . join(' AND ', $wherePartial);
+        $where = $where . ($where ? " AND " : "") . join(" AND ", $wherePartial);
       }
 
       if ($where) {
@@ -78,60 +78,60 @@ class Content {
       }
     }
 
-    $sql = str_replace('[where]', $where, $sql);
+    $sql = str_replace("[where]", $where, $sql);
     $stmt = $this->db->prepare($sql);
     $stmt->execute($whereParams);
 
     $result = $stmt->fetchAll();
     return [
-      'status' => $stmt->columnCount(),
-      'data' => $result,
+      "status" => $stmt->columnCount(),
+      "data" => $result,
     ];
   }
 
   function find($id) {
-    $sql = '
+    $sql = "
       SELECT * FROM content
       WHERE id = :id
-    ';
+    ";
 
     $stmt = $this->db->prepare($sql);
     $stmt->execute([
-      ':id' => $id,
+      ":id" => $id,
     ]);
 
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     return [
-      'status' => $stmt->columnCount(),
-      'data' => $result,
+      "status" => $stmt->columnCount(),
+      "data" => $result,
     ];
   }
 
   function insert($type, $data) {
-    $data['id'] = md5(uniqid('content'));
-    $data['type'] = $type;
+    $data["id"] = md5(uniqid("content"));
+    $data["type"] = $type;
     $columns = array_keys($data);
     
-    $sql = '
+    $sql = "
       INSERT INTO content
-      (' . join(', ', $columns) . ')
+      (" . join(", ", $columns) . ")
       VALUES
-      (:' . join(', :', $columns) .')
-    ';
+      (:" . join(", :", $columns) .")
+    ";
 
     $stmt = $this->db->prepare($sql);
     $stmt->execute($data);
     return [
-      'status' => $stmt->rowCount(),
-      'data' => $data
+      "status" => $stmt->rowCount(),
+      "data" => $data
     ];
   }
 
   function update($type, $id, $data) {
-    $data['type'] = $type;
-    $columns = join(', ', array_map(
+    $data["type"] = $type;
+    $columns = join(", ", array_map(
       function ($field) {
-        echo 'sdfasdfa';
+        echo "sdfasdfa";
         return "$field = :$field";
       },
       array_keys($data)
@@ -143,30 +143,30 @@ class Content {
       WHERE id = :id
     ";
 
-    $data[':id'] = $id;
+    $data[":id"] = $id;
     $stmt = $this->db->prepare($sql);
     $stmt->execute($data);
-    unset($data[':id']);
+    unset($data[":id"]);
 
     return [
-      'status' => $stmt->rowCount() >= 0,
-      'data' => $data
+      "status" => $stmt->rowCount() >= 0,
+      "data" => $data
     ];
   }
 
   function delete($id) {
-    $sql = '
+    $sql = "
       DELETE FROM content
       WHERE id = :id
-    ';
+    ";
 
     $stmt = $this->db->prepare($sql);
     $stmt->execute([
-      ':id' => $id,
+      ":id" => $id,
     ]);
 
     return [
-      'status' => $stmt->rowCount(),
+      "status" => $stmt->rowCount(),
     ];
   }
 }

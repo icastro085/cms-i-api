@@ -12,71 +12,71 @@ class Content {
   private $service;
 
   function __construct($container) {
-    $this->service = new SContent($container['db']);
+    $this->service = new SContent($container["db"]);
   }
 
   function index(Request $request, Response $response, array $args) {
     $queryParams = $request->getQueryParams();
-    $queryParams['type'] = $args['type'];
+    $queryParams["type"] = $args["type"];
     $result = $this->service->findAll($queryParams);
-    if ($result['status']) {
-      return $response->withJson($result['data'], 200);
+    if ($result["status"]) {
+      return $response->withJson($result["data"], 200);
     }
 
     return $response->withJson([
-      'status' => 'Not Found',
+      "status" => "Not Found",
     ], 404);
   }
 
   function find(Request $request, Response $response, array $args) {
-    $id = $args['id'];
+    $id = $args["id"];
     $result = $this->service->find($id);
-    if ($result['status']) {
-      return $response->withJson($result['data'], 200);
+    if ($result["status"]) {
+      return $response->withJson($result["data"], 200);
     }
 
     return $response->withJson([
-      'status' => 'Not Found',
+      "status" => "Not Found",
     ], 404);
   }
 
   function create(Request $request, Response $response, array $args) {
     $data = $request->getParsedBody();
-    $result = $this->service->insert($args['type'], $data);
+    $result = $this->service->insert($args["type"], $data);
 
-    if ($result['status']) {
-      return $response->withJson($result['data'], 201);
+    if ($result["status"]) {
+      return $response->withJson($result["data"], 201);
     }
 
     return $response->withJson([
-      'status' => 'Error',
+      "status" => "Error",
     ], 400);
   }
 
   function update(Request $request, Response $response, array $args) {
     $data = $request->getParsedBody();
-    $result = $this->service->update($args['type'], $args['id'], $data);
+    $result = $this->service->update($args["type"], $args["id"], $data);
 
-    if ($result['status']) {
-      return $response->withJson($result['data'], 200);
+    if ($result["status"]) {
+      return $response->withJson($result["data"], 200);
     }
 
     return $response->withJson([
-      'status' => 'Error',
+      "status" => "Error",
     ], 400);
   }
 
   function delete(Request $request, Response $response, array $args) {
-    $id = $args['id'];
+    $id = $args["id"];
     $result = $this->service->delete($id);
-    if ($result['status']) {
+    if ($result["status"]) {
       return $response->withJson([
-        'status' => 'Deleted'
+        "status" => "Deleted"
       ], 200);
     }
 
     return $response->withJson([
-      'status' => 'Not Found',
+      "status" => "Not Found",
     ], 404);
   }
 }
