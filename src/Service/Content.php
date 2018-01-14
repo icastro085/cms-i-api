@@ -35,6 +35,7 @@ class Content {
     $sql = "
       SELECT * FROM content
       [where]
+      ORDER BY dt_created DESC
     ";
 
     $where = "";
