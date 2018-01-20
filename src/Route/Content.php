@@ -12,7 +12,7 @@ class Content {
   private $service;
 
   function __construct($container) {
-    $this->service = new SContent($container["db"]);
+    $this->service = new SContent($container["database"]);
   }
 
   function index(Request $request, Response $response, array $args) {

@@ -36,6 +36,13 @@ $config = [
   "settings" => $setting,
 ];
 //------------------------------------------------------------------------------
+//$connFactory = new \Illuminate\Database\Connectors\ConnectionFactory();
+// $conn = $connFactory->make($setting["db"]);
+// $resolver = new \Illuminate\Database\ConnectionResolver();
+// $resolver->addConnection("default", $conn);
+// $resolver->setDefaultConnection("default");
+// \Illuminate\Database\Eloquent\Model::setConnectionResolver($resolver);
+//------------------------------------------------------------------------------
 $app = new \Slim\App($config);
 new \API\Index($app);
 //------------------------------------------------------------------------------

@@ -11,6 +11,7 @@
         "monolog/monolog": "^1.23",
         "symfony/yaml": "^3.4",
         "oscarotero/psr7-middlewares": "^3.21",
-        "tuupola/cors-middleware": "^0.5.2"
+        "tuupola/cors-middleware": "^0.5.2",
+        "illuminate/database": "^5.5"
     }
 }
