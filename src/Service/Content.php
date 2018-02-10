@@ -14,9 +14,14 @@ class Content {
   }
 
   function findAll(array $queryParams = []) {
-    $contents = MContent::where("type", $queryParams[type])
-      ->where("title", "LIKE", "%$queryParams[text]%")
-      ->orWhere("text", "LIKE", "%$queryParams[text]%");
+    $contents = MContent::where("type", $queryParams[type]);
+    if ($queryParams[text]) {
+      $contents->where(function($query) use ($queryParams) {
+        $query->where("title", "LIKE", "%$queryParams[text]%")
+          ->orWhere("text", "LIKE", "%$queryParams[text]%");
+      });
+    }
+
     return [
       status => $contents->count(),
       data => $contents->get()->toArray(),
