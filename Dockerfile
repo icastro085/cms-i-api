@@ -11,7 +11,6 @@ COPY composer.json $WORKDIR
 RUN composer install --ignore-platform-reqs --no-scripts
 
 VOLUME [ "$WORKDIR/vendor" ]
-VOLUME [ "/var/lib/mysql" ]
 
 EXPOSE 4211
 CMD php -S 0.0.0.0:4211
