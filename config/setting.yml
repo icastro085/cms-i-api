@@ -2,10 +2,10 @@ displayErrorDetails: true
 addContentLengthHeader: false
 database:
   driver: mysql
-  host: localhost
+  host: mysql
   database: i-content
   username: root
-  password: 12345678
+  password: 123456
   collation: utf8_general_ci
 logger:
   name: cms-i-app

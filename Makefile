@@ -1,2 +1,11 @@
+build:
+	docker-compose build api
+
 start:
-	php -S localhost:8081
+	docker-compose up -d api
+
+stop:
+	docker-compose down
+
+logs:
+	docker-compose logs -f api

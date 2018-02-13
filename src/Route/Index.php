@@ -11,6 +11,7 @@ class Index {
   }
 
   function index(Request $request, Response $response) {
+    echo phpinfo();
     return $response->withStatus(200)->getBody()->write("ok");
   }
 }

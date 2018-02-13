@@ -14,8 +14,8 @@ class Content {
   }
 
   function findAll(array $queryParams = []) {
-    $contents = MContent::where("type", $queryParams[type]);
-    if ($queryParams[text]) {
+    $contents = MContent::where("type", $queryParams["type"]);
+    if ($queryParams["text"]) {
       $contents->where(function($query) use ($queryParams) {
         $query->where("title", "LIKE", "%$queryParams[text]%")
           ->orWhere("text", "LIKE", "%$queryParams[text]%");
@@ -23,16 +23,16 @@ class Content {
     }
 
     return [
-      status => $contents->count(),
-      data => $contents->get()->toArray(),
+      "status" => $contents->count(),
+      "data" => $contents->get()->toArray(),
     ];
   }
 
   function find($id) {
     $content = MContent::find($id);
     return [
-      status => $content->count(),
-      data => $content->toArray(),
+      "status" => $content->count(),
+      "data" => $content->toArray(),
     ];
   }
 
@@ -46,8 +46,8 @@ class Content {
     }
 
     return [
-      status => $content->save(),
-      data => $content->toArray(),
+      "status" => $content->save(),
+      "data" => $content->toArray(),
     ];
   }
 
@@ -61,15 +61,15 @@ class Content {
     }
 
     return [
-      status => $content->save(),
-      data => $content->toArray(),
+      "status" => $content->save(),
+      "data" => $content->toArray(),
     ];
   }
 
   function delete($id) {
     $content = MContent::find($id);
     return [
-      status => $content->delete(),
+      "status" => $content->delete(),
     ];
   }
 }

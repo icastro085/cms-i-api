@@ -1,0 +1,39 @@
+version: "3"
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 4211:4211
+    volumes:
+      - .:/usr/src/app
+    restart: always
+    links:
+      - mysql
+    depends_on:
+      - mysql
+      - phpmyadmin
+  mysql:
+    image: mysql:8.0.3
+    restart: always
+    environment:
+      MYSQL_DATABASE: i-content
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - 8080:80
+    volumes:
+      - /sessions
+    links:
+      - mysql:db
+    depends_on:
+      - mysql
+    environment:
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
